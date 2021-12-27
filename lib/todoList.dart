@@ -1,5 +1,8 @@
+// ignore_for_file: prefer_final_fields
+
 import 'package:flutter/material.dart';
 
+// Class for every list item
 class TodoItem {
   String task;
   bool isDone;
@@ -15,14 +18,17 @@ class TodoList extends StatefulWidget {
 }
 
 class _TodoListState extends State<TodoList> {
+  // Stores todos
   List<TodoItem> _todoItems = [];
 
+  // Adds todo to the list
   void _addTodoItem(TodoItem todoItem) {
     setState(() {
       _todoItems.add(todoItem);
     });
   }
 
+  // Builds one todo as ListTile
   Widget _buildListItem(TodoItem todoItem) {
     return ListTile(
       contentPadding: const EdgeInsets.only(left: 25),
@@ -34,6 +40,7 @@ class _TodoListState extends State<TodoList> {
     );
   }
 
+  // Builds whole list of todos with dividers
   Widget _buildList() {
     return ListView.separated(
       padding: const EdgeInsets.all(10),
@@ -48,7 +55,8 @@ class _TodoListState extends State<TodoList> {
     );
   }
 
-  var _controller = TextEditingController();
+  // Adding item screen using Navigator
+  final _controller = TextEditingController();
   void _addTodoItemScreen() {
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) {
