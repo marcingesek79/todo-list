@@ -20,11 +20,25 @@ class TodoList extends StatefulWidget {
 class _TodoListState extends State<TodoList> {
   // Stores todos
   List<TodoItem> _todoItems = [];
+  int _todosDone = 0;
 
   // Adds todo to the list
   void _addTodoItem(TodoItem todoItem) {
     setState(() {
       _todoItems.add(todoItem);
+    });
+  }
+
+  void _markTodoItemAsDone(TodoItem todoItem) {
+    setState(() {
+      int index = _todoItems.indexOf(todoItem);
+      if (_todoItems[index].isDone) {
+        _todoItems[index].isDone = false;
+        _todosDone--;
+      } else {
+        _todoItems[index].isDone = true;
+        _todosDone++;
+      }
     });
   }
 
@@ -34,8 +48,20 @@ class _TodoListState extends State<TodoList> {
       contentPadding: const EdgeInsets.only(left: 25),
       title: Text(
         todoItem.task,
-        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+        style: (todoItem.isDone)
+            ? const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                decorationColor: Colors.blue,
+                decorationThickness: 3,
+                decoration: TextDecoration.lineThrough,
+              )
+            : const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
       ),
+      onTap: () => _markTodoItemAsDone(todoItem),
       tileColor: Colors.blue[100],
     );
   }
@@ -97,7 +123,7 @@ class _TodoListState extends State<TodoList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Todo List (${_todoItems.length} items)"),
+        title: Text("Todo List (${_todoItems.length} items, $_todosDone done)"),
       ),
       body: _buildList(),
       floatingActionButton: FloatingActionButton(
